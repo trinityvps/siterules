@@ -14,5 +14,6 @@ DOMAIN-SUFFIX,xboxservices.com,PROXY
 DOMAIN-SUFFIX,gamepass.com,PROXY
 # ==================== Epic Games ====================
 # ==================== PikPak ====================
+# ==================== LocalSend ====================
 DOMAIN,api-drive.mypikpak.com,PROXY
 DOMAIN-KEYWORD,pikpak,PROXY

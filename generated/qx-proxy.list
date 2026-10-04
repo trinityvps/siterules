@@ -14,5 +14,6 @@ host-suffix, xboxservices.com, proxy
 host-suffix, gamepass.com, proxy
 # ==================== Epic Games ====================
 # ==================== PikPak ====================
+# ==================== LocalSend ====================
 host, api-drive.mypikpak.com, proxy
 host-keyword, pikpak, proxy

@@ -48,5 +48,11 @@ DOMAIN-SUFFIX,spyjinx.com,DIRECT
 DOMAIN-SUFFIX,unrealengine.com,DIRECT
 DOMAIN-SUFFIX,unrealtournament.com,DIRECT
 # ==================== PikPak ====================
+# ==================== LocalSend ====================
+DOMAIN-SUFFIX,localsend.org,DIRECT
+IP-CIDR,224.0.0.167/32,DIRECT
+IP-CIDR,10.0.0.0/8,DIRECT
+IP-CIDR,172.16.0.0/12,DIRECT
+IP-CIDR,169.254.0.0/16,DIRECT
 DOMAIN-KEYWORD,dl-a10b-,DIRECT
 DOMAIN-KEYWORD,dl-z01a-,DIRECT

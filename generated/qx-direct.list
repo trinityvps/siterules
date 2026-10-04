@@ -48,5 +48,11 @@ host-suffix, spyjinx.com, direct
 host-suffix, unrealengine.com, direct
 host-suffix, unrealtournament.com, direct
 # ==================== PikPak ====================
+# ==================== LocalSend ====================
+host-suffix, localsend.org, direct
+ip-cidr, 224.0.0.167/32, direct, no-resolve
+ip-cidr, 10.0.0.0/8, direct, no-resolve
+ip-cidr, 172.16.0.0/12, direct, no-resolve
+ip-cidr, 169.254.0.0/16, direct, no-resolve
 host-keyword, dl-a10b-, direct
 host-keyword, dl-z01a-, direct
