@@ -67,6 +67,15 @@ DOMAIN,access.mypikpak.com,REJECT
 DOMAIN,access.mypikpak.net,REJECT
 DOMAIN,access.pikpak.me,REJECT
 DOMAIN,access.pikpakdrive.com,REJECT
+
+# ==================== LocalSend ====================
+DOMAIN-SUFFIX,localsend.org,DIRECT
+IP-CIDR,224.0.0.167/32,DIRECT
+IP-CIDR,10.0.0.0/8,DIRECT
+IP-CIDR,172.16.0.0/12,DIRECT
+IP-CIDR,192.168.0.0/16,DIRECT
+IP-CIDR,169.254.0.0/16,DIRECT
+DST-PORT,53317,DIRECT
 DOMAIN-KEYWORD,dl-a10b-,DIRECT
 DOMAIN-KEYWORD,dl-z01a-,DIRECT
 DOMAIN,api-drive.mypikpak.com,PROXY
