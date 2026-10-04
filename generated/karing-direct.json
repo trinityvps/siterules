@@ -1,1 +1,69 @@
-{"version":1,"rules":[{"outbound":"direct","name":"GitHub Direct","switch":true,"or":false,"domain_suffix":["api.steampowered.com","battlebreakers.com","bing.com","bingapis.com","cm.steampowered.com","dogfight360.com","download.epicgames.com","download2.epicgames.com","download3.epicgames.com","download4.epicgames.com","eac-cdn.com","easy.ac","easyanticheat.net","epicgames-download1.akamaized.net","epicgames.com","epicgames.dev","fastly-download.epicgames.com","fortnite.com","helpshift.com","localhost","localsend.org","msftconnecttest.com","paragon.com","playparagon.com","roborecall.com","shadowcomplex.com","spyjinx.com","steamcontent.com","steamserver.net","tekqart.com","unrealengine.com","unrealtournament.com"],"domain_keyword":["dl-a10b-","dl-z01a-","hsbc","investing.com","player-api-prod","prod-game-assets-app"],"ip_cidr":["10.0.0.0/8","102.10.125.0/24","103.10.124.0/24","103.10.125.0/24","127.0.0.0/24","169.254.0.0/16","172.16.0.0/12","172.172.0.0/16","192.168.0.0/16","192.192.0.0/16","224.0.0.167/32"]}]}
+{
+  "version": 1,
+  "rules": [
+    {
+      "outbound": "direct",
+      "name": "GitHub Direct",
+      "switch": true,
+      "or": false,
+      "domain_suffix": [
+        "localhost",
+        "tekqart.com",
+        "bing.com",
+        "bingapis.com",
+        "msftconnecttest.com",
+        "dogfight360.com",
+        "steamcontent.com",
+        "api.steampowered.com",
+        "cm.steampowered.com",
+        "steamserver.net",
+        "download.epicgames.com",
+        "download2.epicgames.com",
+        "download3.epicgames.com",
+        "download4.epicgames.com",
+        "fastly-download.epicgames.com",
+        "epicgames-download1.akamaized.net",
+        "battlebreakers.com",
+        "eac-cdn.com",
+        "easy.ac",
+        "easyanticheat.net",
+        "epicgames.com",
+        "epicgames.dev",
+        "fortnite.com",
+        "helpshift.com",
+        "paragon.com",
+        "playparagon.com",
+        "roborecall.com",
+        "shadowcomplex.com",
+        "spyjinx.com",
+        "unrealengine.com",
+        "unrealtournament.com",
+        "localsend.org"
+      ],
+      "domain_keyword": [
+        "investing.com",
+        "hsbc",
+        "player-api-prod",
+        "prod-game-assets-app",
+        "dl-a10b-",
+        "dl-z01a-"
+      ],
+      "ip_cidr": [
+        "172.172.0.0/16",
+        "192.168.0.0/16",
+        "192.192.0.0/16",
+        "127.0.0.0/24",
+        "103.10.124.0/24",
+        "103.10.125.0/24",
+        "102.10.125.0/24",
+        "224.0.0.167/32",
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "169.254.0.0/16"
+      ],
+      "port": [
+        "53317"
+      ]
+    }
+  ]
+}

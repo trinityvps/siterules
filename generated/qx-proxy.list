@@ -1,19 +1,10 @@
-# === 基础规则 ====================
-# === PTCGP ===
-# ==================== Bing ====================
-# ==================== Dogfight360 ====================
-# ==================== Steam ====================
-host-suffix, steamcommunity.com, proxy
-# ==================== Xbox / Game Pass ====================
-host-suffix, xbox.com, proxy
-host-suffix, xboxab.com, proxy
-host-suffix, xboxab.net, proxy
-host-suffix, xboxlive.com, proxy
-host-suffix, xboxservice.com, proxy
-host-suffix, xboxservices.com, proxy
-host-suffix, gamepass.com, proxy
-# ==================== Epic Games ====================
-# ==================== PikPak ====================
-# ==================== LocalSend ====================
-host, api-drive.mypikpak.com, proxy
-host-keyword, pikpak, proxy
+host-suffix,steamcommunity.com,proxy
+host-suffix,xbox.com,proxy
+host-suffix,xboxab.com,proxy
+host-suffix,xboxab.net,proxy
+host-suffix,xboxlive.com,proxy
+host-suffix,xboxservice.com,proxy
+host-suffix,xboxservices.com,proxy
+host-suffix,gamepass.com,proxy
+host,api-drive.mypikpak.com,proxy
+host-keyword,pikpak,proxy

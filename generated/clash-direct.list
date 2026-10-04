@@ -1,4 +1,3 @@
-# === 基础规则 ====================
 IP-CIDR,172.172.0.0/16,DIRECT
 IP-CIDR,192.168.0.0/16,DIRECT
 IP-CIDR,192.192.0.0/16,DIRECT
@@ -7,16 +6,12 @@ DOMAIN-SUFFIX,localhost,DIRECT
 DOMAIN-KEYWORD,investing.com,DIRECT
 DOMAIN-SUFFIX,tekqart.com,DIRECT
 DOMAIN-KEYWORD,hsbc,DIRECT
-# === PTCGP ===
 DOMAIN-KEYWORD,player-api-prod,DIRECT
 DOMAIN-KEYWORD,prod-game-assets-app,DIRECT
-# ==================== Bing ====================
 DOMAIN-SUFFIX,bing.com,DIRECT
 DOMAIN-SUFFIX,bingapis.com,DIRECT
 DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
-# ==================== Dogfight360 ====================
 DOMAIN-SUFFIX,dogfight360.com,DIRECT
-# ==================== Steam ====================
 DOMAIN-SUFFIX,steamcontent.com,DIRECT
 DOMAIN-SUFFIX,api.steampowered.com,DIRECT
 DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
@@ -24,8 +19,6 @@ DOMAIN-SUFFIX,steamserver.net,DIRECT
 IP-CIDR,103.10.124.0/24,DIRECT
 IP-CIDR,103.10.125.0/24,DIRECT
 IP-CIDR,102.10.125.0/24,DIRECT
-# ==================== Xbox / Game Pass ====================
-# ==================== Epic Games ====================
 DOMAIN-SUFFIX,download.epicgames.com,DIRECT
 DOMAIN-SUFFIX,download2.epicgames.com,DIRECT
 DOMAIN-SUFFIX,download3.epicgames.com,DIRECT
@@ -47,12 +40,11 @@ DOMAIN-SUFFIX,shadowcomplex.com,DIRECT
 DOMAIN-SUFFIX,spyjinx.com,DIRECT
 DOMAIN-SUFFIX,unrealengine.com,DIRECT
 DOMAIN-SUFFIX,unrealtournament.com,DIRECT
-# ==================== PikPak ====================
-# ==================== LocalSend ====================
 DOMAIN-SUFFIX,localsend.org,DIRECT
 IP-CIDR,224.0.0.167/32,DIRECT
 IP-CIDR,10.0.0.0/8,DIRECT
 IP-CIDR,172.16.0.0/12,DIRECT
 IP-CIDR,169.254.0.0/16,DIRECT
+DST-PORT,53317,DIRECT
 DOMAIN-KEYWORD,dl-a10b-,DIRECT
 DOMAIN-KEYWORD,dl-z01a-,DIRECT

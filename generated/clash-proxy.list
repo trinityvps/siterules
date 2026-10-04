@@ -1,10 +1,4 @@
-# === 基础规则 ====================
-# === PTCGP ===
-# ==================== Bing ====================
-# ==================== Dogfight360 ====================
-# ==================== Steam ====================
 DOMAIN-SUFFIX,steamcommunity.com,PROXY
-# ==================== Xbox / Game Pass ====================
 DOMAIN-SUFFIX,xbox.com,PROXY
 DOMAIN-SUFFIX,xboxab.com,PROXY
 DOMAIN-SUFFIX,xboxab.net,PROXY
@@ -12,8 +6,5 @@ DOMAIN-SUFFIX,xboxlive.com,PROXY
 DOMAIN-SUFFIX,xboxservice.com,PROXY
 DOMAIN-SUFFIX,xboxservices.com,PROXY
 DOMAIN-SUFFIX,gamepass.com,PROXY
-# ==================== Epic Games ====================
-# ==================== PikPak ====================
-# ==================== LocalSend ====================
 DOMAIN,api-drive.mypikpak.com,PROXY
 DOMAIN-KEYWORD,pikpak,PROXY

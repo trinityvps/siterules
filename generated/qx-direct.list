@@ -1,58 +1,50 @@
-# === 基础规则 ====================
-ip-cidr, 172.172.0.0/16, direct, no-resolve
-ip-cidr, 192.168.0.0/16, direct, no-resolve
-ip-cidr, 192.192.0.0/16, direct, no-resolve
-ip-cidr, 127.0.0.0/24, direct, no-resolve
-host-suffix, localhost, direct
-host-keyword, investing.com, direct
-host-suffix, tekqart.com, direct
-host-keyword, hsbc, direct
-# === PTCGP ===
-host-keyword, player-api-prod, direct
-host-keyword, prod-game-assets-app, direct
-# ==================== Bing ====================
-host-suffix, bing.com, direct
-host-suffix, bingapis.com, direct
-host-suffix, msftconnecttest.com, direct
-# ==================== Dogfight360 ====================
-host-suffix, dogfight360.com, direct
-# ==================== Steam ====================
-host-suffix, steamcontent.com, direct
-host-suffix, api.steampowered.com, direct
-host-suffix, cm.steampowered.com, direct
-host-suffix, steamserver.net, direct
-ip-cidr, 103.10.124.0/24, direct, no-resolve
-ip-cidr, 103.10.125.0/24, direct, no-resolve
-ip-cidr, 102.10.125.0/24, direct, no-resolve
-# ==================== Xbox / Game Pass ====================
-# ==================== Epic Games ====================
-host-suffix, download.epicgames.com, direct
-host-suffix, download2.epicgames.com, direct
-host-suffix, download3.epicgames.com, direct
-host-suffix, download4.epicgames.com, direct
-host-suffix, fastly-download.epicgames.com, direct
-host-suffix, epicgames-download1.akamaized.net, direct
-host-suffix, battlebreakers.com, direct
-host-suffix, eac-cdn.com, direct
-host-suffix, easy.ac, direct
-host-suffix, easyanticheat.net, direct
-host-suffix, epicgames.com, direct
-host-suffix, epicgames.dev, direct
-host-suffix, fortnite.com, direct
-host-suffix, helpshift.com, direct
-host-suffix, paragon.com, direct
-host-suffix, playparagon.com, direct
-host-suffix, roborecall.com, direct
-host-suffix, shadowcomplex.com, direct
-host-suffix, spyjinx.com, direct
-host-suffix, unrealengine.com, direct
-host-suffix, unrealtournament.com, direct
-# ==================== PikPak ====================
-# ==================== LocalSend ====================
-host-suffix, localsend.org, direct
-ip-cidr, 224.0.0.167/32, direct, no-resolve
-ip-cidr, 10.0.0.0/8, direct, no-resolve
-ip-cidr, 172.16.0.0/12, direct, no-resolve
-ip-cidr, 169.254.0.0/16, direct, no-resolve
-host-keyword, dl-a10b-, direct
-host-keyword, dl-z01a-, direct
+ip-cidr,172.172.0.0/16,direct,no-resolve
+ip-cidr,192.168.0.0/16,direct,no-resolve
+ip-cidr,192.192.0.0/16,direct,no-resolve
+ip-cidr,127.0.0.0/24,direct,no-resolve
+host-suffix,localhost,direct
+host-keyword,investing.com,direct
+host-suffix,tekqart.com,direct
+host-keyword,hsbc,direct
+host-keyword,player-api-prod,direct
+host-keyword,prod-game-assets-app,direct
+host-suffix,bing.com,direct
+host-suffix,bingapis.com,direct
+host-suffix,msftconnecttest.com,direct
+host-suffix,dogfight360.com,direct
+host-suffix,steamcontent.com,direct
+host-suffix,api.steampowered.com,direct
+host-suffix,cm.steampowered.com,direct
+host-suffix,steamserver.net,direct
+ip-cidr,103.10.124.0/24,direct,no-resolve
+ip-cidr,103.10.125.0/24,direct,no-resolve
+ip-cidr,102.10.125.0/24,direct,no-resolve
+host-suffix,download.epicgames.com,direct
+host-suffix,download2.epicgames.com,direct
+host-suffix,download3.epicgames.com,direct
+host-suffix,download4.epicgames.com,direct
+host-suffix,fastly-download.epicgames.com,direct
+host-suffix,epicgames-download1.akamaized.net,direct
+host-suffix,battlebreakers.com,direct
+host-suffix,eac-cdn.com,direct
+host-suffix,easy.ac,direct
+host-suffix,easyanticheat.net,direct
+host-suffix,epicgames.com,direct
+host-suffix,epicgames.dev,direct
+host-suffix,fortnite.com,direct
+host-suffix,helpshift.com,direct
+host-suffix,paragon.com,direct
+host-suffix,playparagon.com,direct
+host-suffix,roborecall.com,direct
+host-suffix,shadowcomplex.com,direct
+host-suffix,spyjinx.com,direct
+host-suffix,unrealengine.com,direct
+host-suffix,unrealtournament.com,direct
+host-suffix,localsend.org,direct
+ip-cidr,224.0.0.167/32,direct,no-resolve
+ip-cidr,10.0.0.0/8,direct,no-resolve
+ip-cidr,172.16.0.0/12,direct,no-resolve
+ip-cidr,169.254.0.0/16,direct,no-resolve
+dst-port,53317,direct
+host-keyword,dl-a10b-,direct
+host-keyword,dl-z01a-,direct
