@@ -1,0 +1,1 @@
+{"version":1,"rules":[{"outbound":"proxy","name":"GitHub Proxy","switch":true,"or":false,"domain_suffix":["gamepass.com","steamcommunity.com","xbox.com","xboxab.com","xboxab.net","xboxlive.com","xboxservice.com","xboxservices.com"]}]}

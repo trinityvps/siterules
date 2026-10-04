@@ -1,0 +1,1 @@
+{"version":1,"rules":[{"outbound":"block","name":"GitHub Reject","switch":true,"or":false}]}

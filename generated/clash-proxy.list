@@ -1,0 +1,15 @@
+# ==================== 基础规则 ====================
+# ==================== Bing ====================
+# ==================== Dogfight360 ====================
+# ==================== Steam ====================
+DOMAIN-SUFFIX,steamcommunity.com,PROXY
+# ==================== Xbox / Game Pass ====================
+DOMAIN-SUFFIX,xbox.com,PROXY
+DOMAIN-SUFFIX,xboxab.com,PROXY
+DOMAIN-SUFFIX,xboxab.net,PROXY
+DOMAIN-SUFFIX,xboxlive.com,PROXY
+DOMAIN-SUFFIX,xboxservice.com,PROXY
+DOMAIN-SUFFIX,xboxservices.com,PROXY
+DOMAIN-SUFFIX,gamepass.com,PROXY
+# ==================== Epic Games ====================
+# ==================== Karing 原有关键词 ====================

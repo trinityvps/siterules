@@ -1,0 +1,48 @@
+# ==================== 基础规则 ====================
+IP-CIDR,172.172.0.0/16,DIRECT
+IP-CIDR,192.168.0.0/16,DIRECT
+IP-CIDR,192.192.0.0/16,DIRECT
+IP-CIDR,127.0.0.0/24,DIRECT
+DOMAIN-SUFFIX,localhost,DIRECT
+DOMAIN-KEYWORD,investing.com,DIRECT
+DOMAIN-SUFFIX,tekqart.com,DIRECT
+# ==================== Bing ====================
+DOMAIN-SUFFIX,bing.com,DIRECT
+DOMAIN-SUFFIX,bingapis.com,DIRECT
+DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+# ==================== Dogfight360 ====================
+DOMAIN-SUFFIX,dogfight360.com,DIRECT
+# ==================== Steam ====================
+DOMAIN-SUFFIX,steamcontent.com,DIRECT
+DOMAIN-SUFFIX,api.steampowered.com,DIRECT
+DOMAIN-SUFFIX,cm.steampowered.com,DIRECT
+DOMAIN-SUFFIX,steamserver.net,DIRECT
+IP-CIDR,103.10.124.0/24,DIRECT
+IP-CIDR,103.10.125.0/24,DIRECT
+IP-CIDR,102.10.125.0/24,DIRECT
+# ==================== Xbox / Game Pass ====================
+# ==================== Epic Games ====================
+DOMAIN-SUFFIX,download.epicgames.com,DIRECT
+DOMAIN-SUFFIX,download2.epicgames.com,DIRECT
+DOMAIN-SUFFIX,download3.epicgames.com,DIRECT
+DOMAIN-SUFFIX,download4.epicgames.com,DIRECT
+DOMAIN-SUFFIX,fastly-download.epicgames.com,DIRECT
+DOMAIN-SUFFIX,epicgames-download1.akamaized.net,DIRECT
+DOMAIN-SUFFIX,battlebreakers.com,DIRECT
+DOMAIN-SUFFIX,eac-cdn.com,DIRECT
+DOMAIN-SUFFIX,easy.ac,DIRECT
+DOMAIN-SUFFIX,easyanticheat.net,DIRECT
+DOMAIN-SUFFIX,epicgames.com,DIRECT
+DOMAIN-SUFFIX,epicgames.dev,DIRECT
+DOMAIN-SUFFIX,fortnite.com,DIRECT
+DOMAIN-SUFFIX,helpshift.com,DIRECT
+DOMAIN-SUFFIX,paragon.com,DIRECT
+DOMAIN-SUFFIX,playparagon.com,DIRECT
+DOMAIN-SUFFIX,roborecall.com,DIRECT
+DOMAIN-SUFFIX,shadowcomplex.com,DIRECT
+DOMAIN-SUFFIX,spyjinx.com,DIRECT
+DOMAIN-SUFFIX,unrealengine.com,DIRECT
+DOMAIN-SUFFIX,unrealtournament.com,DIRECT
+# ==================== Karing 原有关键词 ====================
+DOMAIN-KEYWORD,player-api-prod,DIRECT
+DOMAIN-KEYWORD,prod-game-assets-app,DIRECT
