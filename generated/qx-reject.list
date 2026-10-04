@@ -1,1 +1,4 @@
-
+host, access.mypikpak.com, reject
+host, access.mypikpak.net, reject
+host, access.pikpak.me, reject
+host, access.pikpakdrive.com, reject

@@ -1,4 +1,5 @@
-# ==================== 基础规则 ====================
+# === 基础规则 ====================
+# === PTCGP ===
 # ==================== Bing ====================
 # ==================== Dogfight360 ====================
 # ==================== Steam ====================
@@ -12,4 +13,6 @@ host-suffix, xboxservice.com, proxy
 host-suffix, xboxservices.com, proxy
 host-suffix, gamepass.com, proxy
 # ==================== Epic Games ====================
-# ==================== Karing 原有关键词 ====================
+# ==================== PikPak ====================
+host, api-drive.mypikpak.com, proxy
+host-keyword, pikpak, proxy

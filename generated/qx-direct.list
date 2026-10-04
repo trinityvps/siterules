@@ -1,4 +1,4 @@
-# ==================== 基础规则 ====================
+# === 基础规则 ====================
 ip-cidr, 172.172.0.0/16, direct, no-resolve
 ip-cidr, 192.168.0.0/16, direct, no-resolve
 ip-cidr, 192.192.0.0/16, direct, no-resolve
@@ -6,6 +6,10 @@ ip-cidr, 127.0.0.0/24, direct, no-resolve
 host-suffix, localhost, direct
 host-keyword, investing.com, direct
 host-suffix, tekqart.com, direct
+host-keyword, hsbc, direct
+# === PTCGP ===
+host-keyword, player-api-prod, direct
+host-keyword, prod-game-assets-app, direct
 # ==================== Bing ====================
 host-suffix, bing.com, direct
 host-suffix, bingapis.com, direct
@@ -43,6 +47,6 @@ host-suffix, shadowcomplex.com, direct
 host-suffix, spyjinx.com, direct
 host-suffix, unrealengine.com, direct
 host-suffix, unrealtournament.com, direct
-# ==================== Karing 原有关键词 ====================
-host-keyword, player-api-prod, direct
-host-keyword, prod-game-assets-app, direct
+# ==================== PikPak ====================
+host-keyword, dl-a10b-, direct
+host-keyword, dl-z01a-, direct
