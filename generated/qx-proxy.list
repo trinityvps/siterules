@@ -1,10 +1,10 @@
-host-suffix,steamcommunity.com,proxy
-host-suffix,xbox.com,proxy
-host-suffix,xboxab.com,proxy
-host-suffix,xboxab.net,proxy
-host-suffix,xboxlive.com,proxy
-host-suffix,xboxservice.com,proxy
-host-suffix,xboxservices.com,proxy
-host-suffix,gamepass.com,proxy
-host,api-drive.mypikpak.com,proxy
-host-keyword,pikpak,proxy
+host-suffix, steamcommunity.com, proxy
+host-suffix, xbox.com, proxy
+host-suffix, xboxab.com, proxy
+host-suffix, xboxab.net, proxy
+host-suffix, xboxlive.com, proxy
+host-suffix, xboxservice.com, proxy
+host-suffix, xboxservices.com, proxy
+host-suffix, gamepass.com, proxy
+host, api-drive.mypikpak.com, proxy
+host-keyword, pikpak, proxy
