@@ -1,40 +1,28 @@
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
 Unified Rule Converter
+Source: source/rules.list
 
-Source:
-    source/rules.list
+Generated files:
+  generated/clash-direct.list
+  generated/clash-proxy.list
+  generated/clash-reject.list
+  generated/qx-direct.list
+  generated/qx-proxy.list
+  generated/qx-reject.list
+  generated/karing-direct.json
+  generated/karing-proxy.json
+  generated/karing-reject.json
 
-Generated:
-    generated/
-        clash-direct.list
-        clash-proxy.list
-        clash-reject.list
-
-        qx-direct.list
-        qx-proxy.list
-        qx-reject.list
-
-        karing-direct.json
-        karing-proxy.json
-        karing-reject.json
-
-Supported source rule types:
-    DOMAIN
-    DOMAIN-SUFFIX
-    DOMAIN-KEYWORD
-    IP-CIDR
-    IP-CIDR6
-    GEOIP
-    DST-PORT
-
-Supported policies:
-    DIRECT
-    PROXY
-    REJECT
-    BLOCK -> REJECT
+Important:
+  - DST-PORT is retained for Clash.
+  - DST-PORT is skipped for Quantumult X because its filter
+    grammar does not support this rule type.
+  - Karing port output uses the "port" field; verify that
+    field against your installed Karing version before relying on it.
 """
 
 from pathlib import Path
@@ -42,19 +30,9 @@ import json
 import sys
 
 
-# ============================================================
-# Paths
-# ============================================================
-
 ROOT = Path(__file__).resolve().parent.parent
-
 SOURCE_FILE = ROOT / "source" / "rules.list"
 OUTPUT_DIR = ROOT / "generated"
-
-
-# ============================================================
-# Supported rule types
-# ============================================================
 
 SUPPORTED_TYPES = {
     "DOMAIN",
@@ -74,72 +52,59 @@ SUPPORTED_POLICIES = {
 }
 
 
-# ============================================================
-# Utility
-# ============================================================
-
-def normalize_policy(policy: str) -> str:
-    """
-    Normalize policy names.
-
-    BLOCK -> REJECT
-    """
-
+def normalize_policy(policy):
     policy = policy.strip().upper()
-
-    if policy == "BLOCK":
-        return "REJECT"
-
-    return policy
+    return "REJECT" if policy == "BLOCK" else policy
 
 
-def normalize_rule_type(rule_type: str) -> str:
-    return rule_type.strip().upper()
-
-
-def split_rule(line: str):
-    """
-    Parse:
-
-        TYPE,value,POLICY
-
-    or:
-
-        TYPE,value,POLICY,OPTION
-
-    Example:
-
-        IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-        DST-PORT,53317,DIRECT
-    """
-
-    parts = [x.strip() for x in line.split(",")]
+def parse_rule(line, line_number):
+    parts = [part.strip() for part in line.split(",")]
 
     if len(parts) < 3:
         raise ValueError(
-            f"Invalid rule: {line}"
+            f"Line {line_number}: invalid rule: {line}"
         )
 
-    rule_type = normalize_rule_type(parts[0])
+    rule_type = parts[0].upper()
     value = parts[1]
     policy = normalize_policy(parts[2])
     options = parts[3:]
 
-    return rule_type, value, policy, options
+    if rule_type not in SUPPORTED_TYPES:
+        raise ValueError(
+            f"Line {line_number}: unsupported rule type "
+            f"{rule_type}: {line}"
+        )
 
+    if policy not in SUPPORTED_POLICIES:
+        raise ValueError(
+            f"Line {line_number}: unsupported policy "
+            f"{policy}: {line}"
+        )
 
-def unique_append(target, value):
-    """
-    Append only if not already present.
-    """
+    if not value:
+        raise ValueError(
+            f"Line {line_number}: rule value is empty"
+        )
 
-    if value not in target:
-        target.append(value)
+    if rule_type == "DST-PORT":
+        try:
+            port = int(value)
+            if not 1 <= port <= 65535:
+                raise ValueError
+        except ValueError:
+            raise ValueError(
+                f"Line {line_number}: invalid port: {value}"
+            )
 
+    return {
+        "type": rule_type,
+        "value": value,
+        "policy": policy,
+        "options": options,
+        "line": line_number,
+    }
 
-# ============================================================
-# Read source rules
-# ============================================================
 
 def read_source():
     if not SOURCE_FILE.exists():
@@ -148,158 +113,79 @@ def read_source():
         )
 
     rules = []
+    seen = set()
 
-    with SOURCE_FILE.open(
-        "r",
-        encoding="utf-8"
-    ) as f:
-
-        for line_number, raw_line in enumerate(f, start=1):
-
+    with SOURCE_FILE.open("r", encoding="utf-8-sig") as file:
+        for line_number, raw_line in enumerate(file, start=1):
             line = raw_line.strip()
 
-            # Empty line
-            if not line:
+            if not line or line.startswith("#"):
                 continue
 
-            # Comment
-            if line.startswith("#"):
-                continue
+            rule = parse_rule(line, line_number)
 
-            try:
-                rule_type, value, policy, options = split_rule(line)
+            # Deduplicate equivalent rules.
+            key = (
+                rule["type"],
+                rule["value"],
+                rule["policy"],
+                tuple(rule["options"]),
+            )
 
-            except Exception as e:
-                raise ValueError(
-                    f"Line {line_number}: {e}"
-                )
-
-            if rule_type not in SUPPORTED_TYPES:
-                raise ValueError(
-                    f"Line {line_number}: "
-                    f"Unsupported rule type: {rule_type}\n"
-                    f"    {line}"
-                )
-
-            if policy not in SUPPORTED_POLICIES:
-                raise ValueError(
-                    f"Line {line_number}: "
-                    f"Unsupported policy: {policy}\n"
-                    f"    {line}"
-                )
-
-            # BLOCK has already been normalized to REJECT.
-            policy = normalize_policy(policy)
-
-            rules.append({
-                "type": rule_type,
-                "value": value,
-                "policy": policy,
-                "options": options,
-                "line": line_number,
-            })
+            if key not in seen:
+                seen.add(key)
+                rules.append(rule)
 
     return rules
 
 
-# ============================================================
+def unique_append(target, value):
+    if value not in target:
+        target.append(value)
+
+
+def split_by_policy(rules, converter, client):
+    result = {
+        "DIRECT": [],
+        "PROXY": [],
+        "REJECT": [],
+    }
+
+    skipped = []
+
+    for rule in rules:
+        if client == "qx" and rule["type"] == "DST-PORT":
+            skipped.append(rule)
+            continue
+
+        converted = converter(rule)
+        result[rule["policy"]].append(converted)
+
+    for policy in result:
+        result[policy] = list(dict.fromkeys(result[policy]))
+
+    return result, skipped
+
+
+# ------------------------------------------------------------
 # Clash
-# ============================================================
+# ------------------------------------------------------------
 
-def convert_clash_rule(rule):
-    """
-    Clash classical rule format.
-
-    Source rule is already mostly compatible with Clash.
-
-    We intentionally preserve DST-PORT because Clash
-    classical rules support it.
-    """
-
-    rule_type = rule["type"]
-    value = rule["value"]
-    policy = rule["policy"]
-    options = rule["options"]
-
+def convert_clash(rule):
     parts = [
-        rule_type,
-        value,
-        policy,
+        rule["type"],
+        rule["value"],
+        rule["policy"],
     ]
-
-    # Preserve options such as no-resolve.
-    #
-    # Example:
-    # IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-    #
-    # If no option was supplied, don't add one.
-    if options:
-        parts.extend(options)
-
+    parts.extend(rule["options"])
     return ",".join(parts)
 
 
-def generate_clash(rules):
-
-    direct = []
-    proxy = []
-    reject = []
-
-    for rule in rules:
-
-        line = convert_clash_rule(rule)
-
-        policy = rule["policy"]
-
-        if policy == "DIRECT":
-            unique_append(direct, line)
-
-        elif policy == "PROXY":
-            unique_append(proxy, line)
-
-        elif policy == "REJECT":
-            unique_append(reject, line)
-
-    return direct, proxy, reject
-
-
-# ============================================================
+# ------------------------------------------------------------
 # Quantumult X
-# ============================================================
+# ------------------------------------------------------------
 
-def convert_qx_rule(rule):
-    """
-    Convert unified source syntax to Quantumult X.
-
-    DOMAIN
-        -> host
-
-    DOMAIN-SUFFIX
-        -> host-suffix
-
-    DOMAIN-KEYWORD
-        -> host-keyword
-
-    IP-CIDR
-        -> ip-cidr
-
-    IP-CIDR6
-        -> ip6-cidr
-
-    GEOIP
-        -> geoip
-
-    DST-PORT
-        -> dst-port
-    """
-
-    rule_type = rule["type"]
-    value = rule["value"]
-    policy = rule["policy"]
-
-    # QX policy names are lowercase.
-    qx_policy = policy.lower()
-
+def convert_qx(rule):
     mapping = {
         "DOMAIN": "host",
         "DOMAIN-SUFFIX": "host-suffix",
@@ -307,64 +193,29 @@ def convert_qx_rule(rule):
         "IP-CIDR": "ip-cidr",
         "IP-CIDR6": "ip6-cidr",
         "GEOIP": "geoip",
-        "DST-PORT": "dst-port",
     }
 
-    qx_type = mapping[rule_type]
+    rule_type = rule["type"]
 
-    # IP rules should use no-resolve.
-    if rule_type in {
-        "IP-CIDR",
-        "IP-CIDR6",
-    }:
-
-        return (
-            f"{qx_type},"
-            f"{value},"
-            f"{qx_policy},"
-            f"no-resolve"
+    # DST-PORT is filtered out before this function is called.
+    if rule_type not in mapping:
+        raise ValueError(
+            f"QX does not support source rule type: {rule_type}"
         )
 
-    return (
-        f"{qx_type},"
-        f"{value},"
-        f"{qx_policy}"
-    )
+    value = rule["value"]
+    policy = rule["policy"].lower()
+
+    # QX IP rules use the three-field form shown in its
+    # official sample configuration.
+    return f"{mapping[rule_type]}, {value}, {policy}"
 
 
-def generate_qx(rules):
-
-    direct = []
-    proxy = []
-    reject = []
-
-    for rule in rules:
-
-        line = convert_qx_rule(rule)
-
-        policy = rule["policy"]
-
-        if policy == "DIRECT":
-            unique_append(direct, line)
-
-        elif policy == "PROXY":
-            unique_append(proxy, line)
-
-        elif policy == "REJECT":
-            unique_append(reject, line)
-
-    return direct, proxy, reject
-
-
-# ============================================================
+# ------------------------------------------------------------
 # Karing
-# ============================================================
+# ------------------------------------------------------------
 
-def karing_rule_field(rule_type):
-    """
-    Convert source rule type to Karing JSON field.
-    """
-
+def karing_field(rule_type):
     mapping = {
         "DOMAIN": "domain",
         "DOMAIN-SUFFIX": "domain_suffix",
@@ -378,44 +229,26 @@ def karing_rule_field(rule_type):
     return mapping[rule_type]
 
 
-def convert_karing_rules(rules, policy):
-
+def make_karing(rules, policy, name, outbound):
     grouped = {}
 
     for rule in rules:
-
         if rule["policy"] != policy:
             continue
 
-        rule_type = rule["type"]
+        field = karing_field(rule["type"])
         value = rule["value"]
 
-        field = karing_rule_field(rule_type)
+        grouped.setdefault(field, [])
+        unique_append(grouped[field], value)
 
-        if field not in grouped:
-            grouped[field] = []
-
-        if value not in grouped[field]:
-            grouped[field].append(value)
-
-    return grouped
-
-
-def generate_karing(rules, policy, name, outbound):
-
-    grouped = convert_karing_rules(
-        rules,
-        policy
-    )
-
-    rule = {
+    result_rule = {
         "outbound": outbound,
         "name": name,
         "switch": True,
         "or": False,
     }
 
-    # Keep a stable field order.
     field_order = [
         "domain",
         "domain_suffix",
@@ -426,230 +259,119 @@ def generate_karing(rules, policy, name, outbound):
     ]
 
     for field in field_order:
-
-        if field in grouped and grouped[field]:
-            rule[field] = grouped[field]
+        if grouped.get(field):
+            result_rule[field] = grouped[field]
 
     return {
         "version": 1,
-        "rules": [
-            rule
-        ]
+        "rules": [result_rule],
     }
 
 
-# ============================================================
-# Write files
-# ============================================================
+# ------------------------------------------------------------
+# Output helpers
+# ------------------------------------------------------------
 
 def write_text(path, lines):
-
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True
-    )
+    path.parent.mkdir(parents=True, exist_ok=True)
 
     content = "\n".join(lines)
-
     if lines:
         content += "\n"
 
-    path.write_text(
-        content,
-        encoding="utf-8"
-    )
+    path.write_text(content, encoding="utf-8")
 
 
 def write_json(path, data):
-
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True
-    )
+    path.parent.mkdir(parents=True, exist_ok=True)
 
     path.write_text(
-        json.dumps(
-            data,
-            ensure_ascii=False,
-            indent=2
-        ) + "\n",
-        encoding="utf-8"
+        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
     )
 
 
-# ============================================================
+# ------------------------------------------------------------
 # Main
-# ============================================================
+# ------------------------------------------------------------
 
 def main():
-
-    print("========================================")
-    print(" Unified Rule Converter")
-    print("========================================")
-    print()
-
+    print("=== Unified Rule Converter ===")
     print(f"Source: {SOURCE_FILE}")
     print(f"Output: {OUTPUT_DIR}")
     print()
 
-    # --------------------------------------------------------
-    # Read
-    # --------------------------------------------------------
-
     rules = read_source()
+    print(f"Loaded {len(rules)} unique source rules.")
 
-    print(f"Loaded {len(rules)} rules.")
-    print()
+    # Clash outputs
+    clash, _ = split_by_policy(rules, convert_clash, "clash")
 
-    # --------------------------------------------------------
-    # Generate Clash
-    # --------------------------------------------------------
+    for policy, filename in [
+        ("DIRECT", "clash-direct.list"),
+        ("PROXY", "clash-proxy.list"),
+        ("REJECT", "clash-reject.list"),
+    ]:
+        write_text(
+            OUTPUT_DIR / filename,
+            clash[policy],
+        )
 
-    clash_direct, clash_proxy, clash_reject = \
-        generate_clash(rules)
+    # Quantumult X outputs
+    qx, skipped_qx = split_by_policy(rules, convert_qx, "qx")
 
-    write_text(
-        OUTPUT_DIR / "clash-direct.list",
-        clash_direct
-    )
+    for policy, filename in [
+        ("DIRECT", "qx-direct.list"),
+        ("PROXY", "qx-proxy.list"),
+        ("REJECT", "qx-reject.list"),
+    ]:
+        write_text(
+            OUTPUT_DIR / filename,
+            qx[policy],
+        )
 
-    write_text(
-        OUTPUT_DIR / "clash-proxy.list",
-        clash_proxy
-    )
+    # Karing outputs
+    karing_files = [
+        ("DIRECT", "GitHub Direct", "direct",
+         "karing-direct.json"),
+        ("PROXY", "GitHub Proxy", "proxy",
+         "karing-proxy.json"),
+        ("REJECT", "GitHub Reject", "block",
+         "karing-reject.json"),
+    ]
 
-    write_text(
-        OUTPUT_DIR / "clash-reject.list",
-        clash_reject
-    )
-
-    # --------------------------------------------------------
-    # Generate Quantumult X
-    # --------------------------------------------------------
-
-    qx_direct, qx_proxy, qx_reject = \
-        generate_qx(rules)
-
-    write_text(
-        OUTPUT_DIR / "qx-direct.list",
-        qx_direct
-    )
-
-    write_text(
-        OUTPUT_DIR / "qx-proxy.list",
-        qx_proxy
-    )
-
-    write_text(
-        OUTPUT_DIR / "qx-reject.list",
-        qx_reject
-    )
-
-    # --------------------------------------------------------
-    # Generate Karing
-    # --------------------------------------------------------
-
-    karing_direct = generate_karing(
-        rules,
-        "DIRECT",
-        "GitHub Direct",
-        "direct"
-    )
-
-    karing_proxy = generate_karing(
-        rules,
-        "PROXY",
-        "GitHub Proxy",
-        "proxy"
-    )
-
-    karing_reject = generate_karing(
-        rules,
-        "REJECT",
-        "GitHub Reject",
-        "block"
-    )
-
-    write_json(
-        OUTPUT_DIR / "karing-direct.json",
-        karing_direct
-    )
-
-    write_json(
-        OUTPUT_DIR / "karing-proxy.json",
-        karing_proxy
-    )
-
-    write_json(
-        OUTPUT_DIR / "karing-reject.json",
-        karing_reject
-    )
-
-    # --------------------------------------------------------
-    # Summary
-    # --------------------------------------------------------
-
-    print("Generated:")
-    print()
-
-    print(
-        f"  Clash Direct : {len(clash_direct)}"
-    )
-
-    print(
-        f"  Clash Proxy  : {len(clash_proxy)}"
-    )
-
-    print(
-        f"  Clash Reject : {len(clash_reject)}"
-    )
+    for policy, name, outbound, filename in karing_files:
+        data = make_karing(rules, policy, name, outbound)
+        write_json(OUTPUT_DIR / filename, data)
 
     print()
-
-    print(
-        f"  QX Direct    : {len(qx_direct)}"
-    )
-
-    print(
-        f"  QX Proxy     : {len(qx_proxy)}"
-    )
-
-    print(
-        f"  QX Reject    : {len(qx_reject)}"
-    )
+    print("Clash:")
+    print(f"  Direct: {len(clash['DIRECT'])}")
+    print(f"  Proxy:  {len(clash['PROXY'])}")
+    print(f"  Reject: {len(clash['REJECT'])}")
 
     print()
+    print("Quantumult X:")
+    print(f"  Direct: {len(qx['DIRECT'])}")
+    print(f"  Proxy:  {len(qx['PROXY'])}")
+    print(f"  Reject: {len(qx['REJECT'])}")
 
-    print("Karing:")
-    print(
-        f"  Direct       : "
-        f"{len(karing_direct['rules'][0]) - 4} fields"
-    )
-
-    print(
-        f"  Proxy        : "
-        f"{len(karing_proxy['rules'][0]) - 4} fields"
-    )
-
-    print(
-        f"  Reject       : "
-        f"{len(karing_reject['rules'][0]) - 4} fields"
-    )
+    if skipped_qx:
+        print()
+        print("Skipped for QX (unsupported rule type):")
+        for rule in skipped_qx:
+            print(
+                f"  source line {rule['line']}: "
+                f"{rule['type']},{rule['value']},{rule['policy']}"
+            )
 
     print()
-    print("Conversion completed successfully.")
+    print("Conversion completed.")
 
 
 if __name__ == "__main__":
-
     try:
         main()
-
-    except Exception as e:
-
-        print()
-        print("ERROR:")
-        print(str(e))
-        print()
-
+    except Exception as error:
+        print(f"\nERROR: {error}", file=sys.stderr)
         sys.exit(1)
